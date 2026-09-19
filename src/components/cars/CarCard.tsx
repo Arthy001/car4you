@@ -28,8 +28,8 @@ export function CarCard({
   onToggleFavorite,
 }: CarCardProps) {
   const isElectric = car.fuel_type === "Electric";
-  const displayPrice = car.price || (car.price_per_day ? car.price_per_day * 100 : 15000);
-  const monthlyPay = car.monthly_payment || Math.round(displayPrice / 60);
+  const displayPrice = car.price || car.price_per_day || 15000;
+  const monthlyPay = car.monthly_payment || Math.round(displayPrice / 72);
 
   return (
     <Link 

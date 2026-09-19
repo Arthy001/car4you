@@ -30,7 +30,8 @@ export default function HomePage() {
   const [showMap, setShowMap] = useState(false);
   const [showListCarModal, setShowListCarModal] = useState(false);
   const [showSettingsModal, setShowSettingsModal] = useState(false);
-  const [currentPage, setCurrentPage] = useState(3);
+  const [currentPage, setCurrentPage] = useState(1);
+  const CARS_PER_PAGE = 8;
 
   // Filter state for Used Car Marketplace
   const [filters, setFilters] = useState<FilterState>({
@@ -39,7 +40,7 @@ export default function HomePage() {
     carTypes: [],
     fuelTypes: [],
     minPrice: 0,
-    maxPrice: 50000,
+    maxPrice: 200000,
     transmission: [],
     seats: [],
     condition: "",
@@ -71,7 +72,7 @@ export default function HomePage() {
   // Filter cars based on used car filter state
   const filteredCars = useMemo(() => {
     return cars.filter((car) => {
-      const carPrice = car.price || (car.price_per_day ? car.price_per_day * 100 : 15000);
+      const carPrice = car.price || car.price_per_day || 15000;
 
       // Search term (name, brand, category, description)
       if (filters.searchTerm) {
@@ -117,6 +118,21 @@ export default function HomePage() {
       return true;
     });
   }, [cars, filters]);
+
+  // Compute pagination
+  const totalPages = Math.max(1, Math.ceil(filteredCars.length / CARS_PER_PAGE));
+
+  // Current page sliced cars
+  const paginatedCars = useMemo(() => {
+    const startIndex = (currentPage - 1) * CARS_PER_PAGE;
+    return filteredCars.slice(startIndex, startIndex + CARS_PER_PAGE);
+  }, [filteredCars, currentPage]);
+
+  // Handle filter changes and reset to page 1
+  const handleFilterChange = (newFilters: FilterState) => {
+    setFilters(newFilters);
+    setCurrentPage(1);
+  };
 
   // Handle Search submit from Hero section
   const handleHeroSearch = (params: {
@@ -190,9 +206,9 @@ export default function HomePage() {
         
         {/* Filter Bar */}
         <FilterBar
-          totalCount={3000}
+          totalCount={filteredCars.length}
           filters={filters}
-          onFilterChange={setFilters}
+          onFilterChange={handleFilterChange}
           showMap={showMap}
           onToggleMap={() => setShowMap(!showMap)}
           onOpenSettings={() => setShowSettingsModal(true)}
@@ -208,19 +224,19 @@ export default function HomePage() {
           />
         )}
 
-        {/* 2-Column Used Car Cards Grid */}
+        {/* 2-Column Used Car Cards Grid (Paginated) */}
         <CarGrid
-          cars={filteredCars}
+          cars={paginatedCars}
           favorites={favorites}
           onToggleFavorite={handleToggleFavorite}
           onSelectCar={(car) => setSelectedCar(car)}
           onResetFilters={handleResetFilters}
         />
 
-        {/* Pagination Bar */}
+        {/* Dynamic Pagination Bar */}
         <Pagination
           currentPage={currentPage}
-          totalPages={66}
+          totalPages={totalPages}
           onPageChange={setCurrentPage}
         />
       </main>

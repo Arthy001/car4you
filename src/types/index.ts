@@ -3,7 +3,7 @@ export type CarCategory =
   | "Sedan" 
   | "SUV" 
   | "Hatchback" 
-  | "Electric" 
+  | "EV" 
   | "Van" 
   | "Coupe" 
   | "Compact";

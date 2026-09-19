@@ -22,7 +22,7 @@ interface FilterBarProps {
   lang: Language;
 }
 
-const CAR_TYPES = ["Sedan", "SUV", "Hatchback", "Electric", "Van", "Compact"];
+const CAR_TYPES = ["Sedan", "SUV", "Hatchback", "EV", "Van", "Coupe"];
 const FUEL_TYPES = ["Petrol", "Diesel", "Electric", "Hybrid"];
 
 export function FilterBar({

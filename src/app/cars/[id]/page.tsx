@@ -120,8 +120,8 @@ export default function CarDetailPage() {
     );
   }
 
-  const displayPrice = car.price || (car.price_per_day ? car.price_per_day * 100 : 18600);
-  const monthlyPay = car.monthly_payment || Math.round(displayPrice / 60);
+  const displayPrice = car.price || car.price_per_day || 18600;
+  const monthlyPay = car.monthly_payment || Math.round(displayPrice / 72);
 
   // Gallery Photos matching template collage (Front, Cockpit, Side, Profile)
   const gallery = [
