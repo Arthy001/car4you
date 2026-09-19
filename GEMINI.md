@@ -10,14 +10,15 @@
 
 ---
 
-## 🚗 Project Overview & Tech Stack
+## 🚗 Project Overview & Tech Stack - Car4U
 
+- **Project Name**: Car4U (Used Car Marketplace & Automotive Sales Platform)
 - **Framework**: Next.js 15 (App Router)
 - **Language**: TypeScript
 - **Styling**: Tailwind CSS & Lucide Icons
 - **Database**: Supabase (PostgreSQL) with fallback mock data
 - **Deployment**: Vercel ready
-- **Theme & Design**: Modern luxury automotive rental & marketplace template (as per UI mockups)
+- **Theme & Design**: Modern luxury used car marketplace & sales template (matching reference mockups)
 
 ---
 
