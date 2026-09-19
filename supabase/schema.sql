@@ -1,4 +1,4 @@
--- Supabase Schema for Car Rental & Marketplace Application
+-- Supabase Schema for Car4U Used Car Marketplace
 -- Run this SQL in your Supabase SQL Editor
 
 -- 1. Create cars table
@@ -12,15 +12,19 @@ CREATE TABLE IF NOT EXISTS public.cars (
     seats INTEGER NOT NULL DEFAULT 5,
     airbags INTEGER NOT NULL DEFAULT 6,
     fuel_type VARCHAR(50) NOT NULL DEFAULT 'Petrol',
-    price_per_day NUMERIC(10, 2) NOT NULL,
+    price NUMERIC(12, 2) NOT NULL,
+    price_per_day NUMERIC(10, 2),
+    monthly_payment NUMERIC(10, 2),
     discount_percent INTEGER DEFAULT 0,
     rating NUMERIC(2, 1) DEFAULT 4.8,
     review_count INTEGER DEFAULT 0,
     location_address VARCHAR(255) NOT NULL,
-    distance_airport VARCHAR(100) DEFAULT '2km from airport',
+    distance_airport VARCHAR(100) DEFAULT '2km from airport branch',
     image_url TEXT NOT NULL,
     gallery_urls TEXT[] DEFAULT '{}',
-    mileage VARCHAR(100) DEFAULT 'Unlimited',
+    mileage VARCHAR(100) DEFAULT '30,000 km',
+    warranty VARCHAR(100) DEFAULT '1 Year Car4U Warranty',
+    condition VARCHAR(100) DEFAULT 'Certified Pre-Owned',
     description TEXT,
     lat NUMERIC(10, 6),
     lng NUMERIC(10, 6),
@@ -29,7 +33,7 @@ CREATE TABLE IF NOT EXISTS public.cars (
     updated_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL
 );
 
--- 2. Create bookings table
+-- 2. Create bookings/inquiries table
 CREATE TABLE IF NOT EXISTS public.bookings (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     car_id UUID REFERENCES public.cars(id) ON DELETE CASCADE,
@@ -41,7 +45,7 @@ CREATE TABLE IF NOT EXISTS public.bookings (
     customer_name VARCHAR(255) NOT NULL,
     customer_email VARCHAR(255) NOT NULL,
     customer_phone VARCHAR(50) NOT NULL,
-    total_price NUMERIC(10, 2) NOT NULL,
+    total_price NUMERIC(12, 2) NOT NULL,
     days INTEGER NOT NULL DEFAULT 1,
     notes TEXT,
     status VARCHAR(50) DEFAULT 'pending',
@@ -52,10 +56,7 @@ CREATE TABLE IF NOT EXISTS public.bookings (
 CREATE TABLE IF NOT EXISTS public.favorites (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     car_id UUID REFERENCES public.cars(id) ON DELETE CASCADE,
-    user_id UUID,
-    session_id VARCHAR(255),
-    created_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL,
-    UNIQUE(car_id, session_id)
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL
 );
 
 -- 4. Enable Row Level Security (RLS)
@@ -64,30 +65,9 @@ ALTER TABLE public.bookings ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.favorites ENABLE ROW LEVEL SECURITY;
 
 -- 5. RLS Policies
--- Allow anyone to read car listings
-CREATE POLICY "Allow public read access on cars" 
-ON public.cars FOR SELECT USING (true);
-
--- Allow public to create bookings
-CREATE POLICY "Allow public insert on bookings" 
-ON public.bookings FOR INSERT WITH CHECK (true);
-
--- Allow reading own bookings by email or session
-CREATE POLICY "Allow read on bookings" 
-ON public.bookings FOR SELECT USING (true);
-
--- Allow public read and write on favorites for visitor sessions
-CREATE POLICY "Allow public read favorites" 
-ON public.favorites FOR SELECT USING (true);
-
-CREATE POLICY "Allow public insert favorites" 
-ON public.favorites FOR INSERT WITH CHECK (true);
-
-CREATE POLICY "Allow public delete favorites" 
-ON public.favorites FOR DELETE USING (true);
-
--- 6. Indexes for performance
-CREATE INDEX IF NOT EXISTS idx_cars_category ON public.cars(category);
-CREATE INDEX IF NOT EXISTS idx_cars_fuel_type ON public.cars(fuel_type);
-CREATE INDEX IF NOT EXISTS idx_cars_price ON public.cars(price_per_day);
-CREATE INDEX IF NOT EXISTS idx_cars_rating ON public.cars(rating);
+CREATE POLICY "Allow public read access on cars" ON public.cars FOR SELECT USING (true);
+CREATE POLICY "Allow public insert on cars" ON public.cars FOR INSERT WITH CHECK (true);
+CREATE POLICY "Allow public update on cars" ON public.cars FOR UPDATE USING (true);
+CREATE POLICY "Allow public insert on bookings" ON public.bookings FOR INSERT WITH CHECK (true);
+CREATE POLICY "Allow read on bookings" ON public.bookings FOR SELECT USING (true);
+CREATE POLICY "Allow public all favorites" ON public.favorites FOR ALL USING (true);

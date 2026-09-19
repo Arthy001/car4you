@@ -11,21 +11,25 @@ export const initialCarsData: Car[] = [
     seats: 4,
     airbags: 6,
     fuel_type: "Petrol",
-    price_per_day: 124,
+    price: 12400,
+    price_per_day: 124, // fallback alias
+    monthly_payment: 195,
     discount_percent: 0,
     rating: 5.0,
     review_count: 126,
-    location_address: "8953 Golf Course Terrace",
-    distance_airport: "2km from airport",
-    image_url: "https://images.unsplash.com/photo-1549399542-7e3f8b79c341?auto=format&fit=crop&w=900&q=80",
+    location_address: "8953 Golf Course Terrace, Bangkok",
+    distance_airport: "2km from airport branch",
+    image_url: "https://images.unsplash.com/photo-1541899481282-d53bffe3c35d?auto=format&fit=crop&w=900&q=80",
     gallery_urls: [
-      "https://images.unsplash.com/photo-1549399542-7e3f8b79c341?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1541899481282-d53bffe3c35d?auto=format&fit=crop&w=1200&q=80",
       "https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=1200&q=80"
     ],
     is_favorite: true,
-    features: ["Air Conditioning", "Bluetooth", "Cruise Control", "Apple CarPlay", "Rear Camera"],
-    description: "Experience the city with this agile, fuel-efficient, and easy-to-park Peugeot 108. Equipped with modern infotainment and safety features for a seamless journey.",
-    mileage: "Unlimited mileage"
+    mileage: "28,000 km",
+    warranty: "1 Year Full Warranty",
+    condition: "Certified Pre-Owned",
+    features: ["Air Conditioning", "Bluetooth Audio", "Cruise Control", "Apple CarPlay", "Rear Camera", "1-Owner Record"],
+    description: "รถมือสองสภาพนางฟ้า ไมล์แท้ 28,000 กม. ไม่เคยเฉี่ยวชน เช็คศูนย์ทุกระยะ เบาะผ้าลายสปอร์ต ประหยัดน้ำมันสูงสุด พร้อมทดลองขับและจัดไฟแนนซ์ได้ทุกธนาคาร"
   },
   {
     id: "car-2",
@@ -37,20 +41,24 @@ export const initialCarsData: Car[] = [
     seats: 4,
     airbags: 6,
     fuel_type: "Electric",
+    price: 28900,
     price_per_day: 382,
+    monthly_payment: 390,
     discount_percent: 0,
     rating: 4.6,
     review_count: 217,
-    location_address: "2606 Straubel Crossing",
-    distance_airport: "2km from airport",
-    image_url: "https://images.unsplash.com/photo-1563720223185-11003d516935?auto=format&fit=crop&w=900&q=80",
+    location_address: "2606 Straubel Crossing, Rama 9",
+    distance_airport: "2km from airport branch",
+    image_url: "https://images.unsplash.com/photo-1593941707882-a5bba14938c7?auto=format&fit=crop&w=900&q=80",
     gallery_urls: [
-      "https://images.unsplash.com/photo-1563720223185-11003d516935?auto=format&fit=crop&w=1200&q=80"
+      "https://images.unsplash.com/photo-1593941707882-a5bba14938c7?auto=format&fit=crop&w=1200&q=80"
     ],
     is_favorite: true,
-    features: ["100% Electric", "Fast Charging", "Lane Assist", "Heated Seats", "Wireless Charging"],
-    description: "Zero emissions, zero compromises. The Hyundai KONA Electric offers exceptional driving dynamics with over 450 km of pure electric range.",
-    mileage: "450 km / charge"
+    mileage: "12,000 km",
+    warranty: "8 Years Battery Warranty",
+    condition: "Like New Condition",
+    features: ["100% Electric EV", "Fast DC Charging", "Lane Keeping Assist", "Heated Seats", "Wireless Charging", "HUD Display"],
+    description: "รถไฟฟ้า SUV สภาพเหมือนป้ายแดง แบตเตอรี่สมบูรณ์ 100% วิ่งได้ไกล 484 กม./ชาร์จ มีรับประกันศูนย์แบตเตอรี่ 8 ปี ไม่เคยทำสี อุปกรณ์ชาร์จครบชุด"
   },
   {
     id: "car-3",
@@ -62,20 +70,24 @@ export const initialCarsData: Car[] = [
     seats: 4,
     airbags: 6,
     fuel_type: "Petrol",
+    price: 10500,
     price_per_day: 105,
+    monthly_payment: 165,
     discount_percent: 0,
     rating: 3.8,
     review_count: 534,
-    location_address: "14 Petterle Trail",
-    distance_airport: "2km from airport",
-    image_url: "https://images.unsplash.com/photo-1552519507-da3b142c6e3d?auto=format&fit=crop&w=900&q=80",
+    location_address: "14 Petterle Trail, Ladprao",
+    distance_airport: "2km from airport branch",
+    image_url: "https://images.unsplash.com/photo-1502877338535-766e1452684a?auto=format&fit=crop&w=900&q=80",
     gallery_urls: [
-      "https://images.unsplash.com/photo-1552519507-da3b142c6e3d?auto=format&fit=crop&w=1200&q=80"
+      "https://images.unsplash.com/photo-1502877338535-766e1452684a?auto=format&fit=crop&w=1200&q=80"
     ],
     is_favorite: false,
-    features: ["Keyless Entry", "Eco Mode", "Navigation", "Rear Parking Sensors"],
-    description: "Compact yet surprisingly spacious inside, the Nissan Micra delivers great economy and nimble handling for city and highway driving.",
-    mileage: "Unlimited mileage"
+    mileage: "35,000 km",
+    warranty: "1 Year Engine Warranty",
+    condition: "Used - Grade A",
+    features: ["Keyless Push Start", "Eco Mode", "Navigation", "Rear Parking Sensors", "ABS + EBD"],
+    description: "รถเก๋ง 5 ประตู ยอดนิยม คล่องตัวในเมือง จอดง่าย ประหยัดน้ำมัน เจ้าของคนเดียวมือแรก ไมล์แท้ สภาพพร้อมใช้งานทันที ฟรีดาวน์ ออกรถ 0 บาท"
   },
   {
     id: "car-4",
@@ -87,20 +99,24 @@ export const initialCarsData: Car[] = [
     seats: 4,
     airbags: 6,
     fuel_type: "Petrol",
+    price: 18600,
     price_per_day: 266,
+    monthly_payment: 275,
     discount_percent: 0,
     rating: 3.1,
     review_count: 527,
-    location_address: "34591 Dawn Park",
-    distance_airport: "2km from airport",
+    location_address: "34591 Dawn Park, Sukhumvit",
+    distance_airport: "2km from airport branch",
     image_url: "https://images.unsplash.com/photo-1617788138017-80ad40651399?auto=format&fit=crop&w=900&q=80",
     gallery_urls: [
       "https://images.unsplash.com/photo-1617788138017-80ad40651399?auto=format&fit=crop&w=1200&q=80"
     ],
     is_favorite: true,
-    features: ["Autonomous Braking", "Dual Zone AC", "Touchscreen 10.25-inch", "LED Headlights"],
-    description: "A comfortable and reliable compact car boasting class-leading safety tech and a smooth automatic transmission.",
-    mileage: "Unlimited mileage"
+    mileage: "22,000 km",
+    warranty: "2 Years Extended Warranty",
+    condition: "Certified Pre-Owned",
+    features: ["Autonomous Emergency Braking", "Dual Zone AC", "Touchscreen 10.25-inch", "LED Headlights", "Cruise Control"],
+    description: "รถสปอร์ตแฮทช์แบ็ก ดีไซน์ยุโรป ช่วงล่างแน่น นุ่มหนึบ ปลอดภัยสูงสุด ภายในสะอาดเหมือนใหม่ พร้อมเอกสารเล่มทะเบียนโอนได้ทันที"
   },
   {
     id: "car-5",
@@ -112,20 +128,24 @@ export const initialCarsData: Car[] = [
     seats: 4,
     airbags: 6,
     fuel_type: "Diesel",
+    price: 26800,
     price_per_day: 268,
+    monthly_payment: 380,
     discount_percent: 20,
     rating: 3.6,
     review_count: 169,
-    location_address: "5970 Manley Terrace",
-    distance_airport: "2km from airport",
+    location_address: "5970 Manley Terrace, Bangna",
+    distance_airport: "2km from airport branch",
     image_url: "https://images.unsplash.com/photo-1559416523-140ddc3d238c?auto=format&fit=crop&w=900&q=80",
     gallery_urls: [
       "https://images.unsplash.com/photo-1559416523-140ddc3d238c?auto=format&fit=crop&w=1200&q=80"
     ],
     is_favorite: false,
-    features: ["High Capacity Luggage", "Rear AC Vents", "Tow Hitch", "Cruise Control", "Hill Start Assist"],
-    description: "Spacious multi-passenger van equipped with premium seating, large luggage capacity, and strong diesel torque for long-distance cruising.",
-    mileage: "Unlimited mileage"
+    mileage: "41,000 km",
+    warranty: "1 Year Commercial Warranty",
+    condition: "Used - Excellent",
+    features: ["High Capacity Luggage", "Rear AC Vents", "Tow Hitch", "Cruise Control", "Hill Start Assist", "Diesel Turbo"],
+    description: "รถตู้โดยสารและขนส่ง ดีเซลเทอร์โบ พลังแรงประหยัดน้ำมัน จุของได้จุใจ สภาพสวยเดิมทั้งคัน จัดโปรลดพิเศษ 20% ผ่อนสบาย เอกสารผ่านง่าย"
   },
   {
     id: "car-6",
@@ -137,20 +157,24 @@ export const initialCarsData: Car[] = [
     seats: 4,
     airbags: 6,
     fuel_type: "Hybrid",
+    price: 24500,
     price_per_day: 321,
+    monthly_payment: 340,
     discount_percent: 0,
     rating: 3.5,
     review_count: 33,
-    location_address: "3 Buhler Point",
-    distance_airport: "2km from airport",
-    image_url: "https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=900&q=80",
+    location_address: "3 Buhler Point, Ratchada",
+    distance_airport: "2km from airport branch",
+    image_url: "https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?auto=format&fit=crop&w=900&q=80",
     gallery_urls: [
-      "https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=1200&q=80"
+      "https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?auto=format&fit=crop&w=1200&q=80"
     ],
     is_favorite: false,
-    features: ["Panoramic Sunroof", "e-POWER Hybrid", "360 Around View", "Bose Premium Audio"],
-    description: "Elevated driving stance with hybrid efficiency. The Qashqai is engineered for style, comfort, and state-of-the-art safety.",
-    mileage: "Unlimited mileage"
+    mileage: "15,000 km",
+    warranty: "3 Years Hybrid Warranty",
+    condition: "Certified Pre-Owned",
+    features: ["Panoramic Sunroof", "e-POWER Hybrid System", "360 Around View Camera", "Bose Premium Audio", "Adaptive Cruise"],
+    description: "SUV ไฮบริดขับเคลื่อนด้วยมอเตอร์ไฟฟ้า นุ่ม เงียบ แรงประหยัด หลังคาแก้วรอบคัน สภาพป้ายแดง เช็คประวัติได้ 100% ไม่เคยมีอุบัติเหตุ"
   },
   {
     id: "car-7",
@@ -162,20 +186,24 @@ export const initialCarsData: Car[] = [
     seats: 4,
     airbags: 6,
     fuel_type: "Petrol",
+    price: 19200,
     price_per_day: 127,
+    monthly_payment: 285,
     discount_percent: 0,
     rating: 4.2,
     review_count: 468,
-    location_address: "35 Kedzie Parkway",
-    distance_airport: "2km from airport",
+    location_address: "35 Kedzie Parkway, Rangsit",
+    distance_airport: "2km from airport branch",
     image_url: "https://images.unsplash.com/photo-1542282088-72c9c27ed0cd?auto=format&fit=crop&w=900&q=80",
     gallery_urls: [
       "https://images.unsplash.com/photo-1542282088-72c9c27ed0cd?auto=format&fit=crop&w=1200&q=80"
     ],
     is_favorite: true,
-    features: ["All-Wheel Drive", "Sport Mode", "Apple CarPlay & Android Auto", "Blind Spot Detection"],
-    description: "The dynamic Hyundai Kona compact SUV features bold styling, responsive handling, and plenty of cargo versatility.",
-    mileage: "Unlimited mileage"
+    mileage: "31,000 km",
+    warranty: "1 Year Full Warranty",
+    condition: "Certified Pre-Owned",
+    features: ["All-Wheel Drive", "Drive Mode Select", "Apple CarPlay & Android Auto", "Blind Spot Collision Warning"],
+    description: "Compact SUV สไตล์สปอร์ต สีเทาสุดหรู ช่วงล่างแน่น ยางใหม่ 4 เส้น ภายในเบาะหนังแท้ ออฟชั่นเต็มคัน ตรวจสอบสภาพผ่าน 200 จุด"
   },
   {
     id: "car-8",
@@ -187,19 +215,23 @@ export const initialCarsData: Car[] = [
     seats: 4,
     airbags: 6,
     fuel_type: "Petrol",
+    price: 8900,
     price_per_day: 46,
+    monthly_payment: 135,
     discount_percent: 0,
     rating: 4.5,
     review_count: 524,
-    location_address: "466 Glendale Place",
-    distance_airport: "2km from airport",
-    image_url: "https://images.unsplash.com/photo-1502877338535-766e1452684a?auto=format&fit=crop&w=900&q=80",
+    location_address: "466 Glendale Place, Thonburi",
+    distance_airport: "2km from airport branch",
+    image_url: "https://images.unsplash.com/photo-1549399542-7e3f8b79c341?auto=format&fit=crop&w=900&q=80",
     gallery_urls: [
-      "https://images.unsplash.com/photo-1502877338535-766e1452684a?auto=format&fit=crop&w=1200&q=80"
+      "https://images.unsplash.com/photo-1549399542-7e3f8b79c341?auto=format&fit=crop&w=1200&q=80"
     ],
     is_favorite: true,
-    features: ["Ultra Fuel Efficient", "Easy Parking", "Bluetooth Audio", "USB Charging"],
-    description: "The most cost-effective runabout in its class. Super light on fuel, extraordinarily easy to park, and very dependable.",
-    mileage: "Unlimited mileage"
+    mileage: "42,000 km",
+    warranty: "1 Year Transmission Warranty",
+    condition: "Used - Grade A",
+    features: ["Ultra Fuel Efficient 23km/L", "Easy Parking", "Bluetooth Audio & USB", "Auto Stop & Go"],
+    description: "อีโค่คาร์ราคาคุ้มค่าที่สุด ประหยัดน้ำมัน 23 กม./ลิตร ผ่อนสบายเพียงเดือนละ 4,000 กว่าบาท เครื่องเกียร์สมบูรณ์ 100% ออกรถได้ทุกอาชีพ"
   }
 ];

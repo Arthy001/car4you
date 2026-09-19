@@ -8,9 +8,10 @@ import {
   Users, 
   Cog, 
   ShieldCheck, 
-  Fuel, 
-  Zap,
-  Tag
+  Zap, 
+  Gauge,
+  Calendar,
+  Sparkles
 } from "lucide-react";
 import { Car } from "@/types";
 
@@ -28,16 +29,23 @@ export function CarCard({
   onSelectCar,
 }: CarCardProps) {
   const isElectric = car.fuel_type === "Electric";
+  const displayPrice = car.price || (car.price_per_day ? car.price_per_day * 100 : 15000);
+  const monthlyPay = car.monthly_payment || Math.round(displayPrice / 60);
 
   return (
     <div 
       onClick={() => onSelectCar(car)}
       className="group bg-white rounded-3xl border border-slate-100/90 hover:border-slate-200/90 p-5 shadow-xs hover:shadow-xl transition-all duration-300 flex flex-col sm:flex-row gap-5 cursor-pointer relative"
     >
-      {/* Top Left Discount Badge (e.g. -20% OFF) */}
+      {/* Top Left Discount or Certified Badge */}
       {car.discount_percent && car.discount_percent > 0 ? (
         <div className="absolute top-4 left-4 z-10 bg-red-50 text-red-600 border border-red-100 text-[11px] font-bold px-2.5 py-0.5 rounded-full uppercase tracking-wider">
           -{car.discount_percent}% OFF
+        </div>
+      ) : car.condition ? (
+        <div className="absolute top-4 left-4 z-10 bg-emerald-50 text-emerald-700 border border-emerald-100 text-[11px] font-bold px-2.5 py-0.5 rounded-full flex items-center gap-1">
+          <Sparkles className="w-3 h-3 text-emerald-600" />
+          <span>{car.condition}</span>
         </div>
       ) : null}
 
@@ -75,10 +83,13 @@ export function CarCard({
         
         {/* Top details: Title, Rating, Location */}
         <div>
-          {/* Car Name */}
-          <h3 className="text-lg sm:text-xl font-extrabold text-slate-900 tracking-tight group-hover:text-indigo-600 transition-colors">
-            {car.name}
-          </h3>
+          {/* Car Name & Year */}
+          <div className="flex items-baseline gap-2">
+            <h3 className="text-lg sm:text-xl font-extrabold text-slate-900 tracking-tight group-hover:text-indigo-600 transition-colors">
+              {car.name}
+            </h3>
+            <span className="text-xs font-bold text-slate-400">({car.model_year})</span>
+          </div>
 
           {/* Rating & Location */}
           <div className="mt-1 space-y-1 text-xs text-slate-500">
@@ -86,19 +97,19 @@ export function CarCard({
             <div className="flex items-center gap-1.5 font-medium">
               <Star className="w-3.5 h-3.5 fill-amber-400 text-amber-400" />
               <span className="font-bold text-slate-900">{car.rating}</span>
-              <span className="text-slate-400">({car.review_count})</span>
+              <span className="text-slate-400">({car.review_count} รีวิว)</span>
               <span className="text-slate-300 mx-1">·</span>
-              <span className="text-slate-500 font-normal">{car.category}</span>
+              <span className="text-indigo-600 font-semibold">{car.category}</span>
             </div>
 
-            {/* Address */}
+            {/* Address / Branch */}
             <div className="flex items-center gap-1 text-slate-500 line-clamp-1">
               <MapPin className="w-3.5 h-3.5 text-slate-400 shrink-0" />
               <span className="truncate">{car.location_address}</span>
             </div>
           </div>
 
-          {/* Specs icons row matching screenshot: 4 seats, Auto gearbox, 6 airbags */}
+          {/* Specs icons row: 4 seats, Auto gearbox, 6 airbags */}
           <div className="mt-4 flex flex-wrap items-center gap-x-4 gap-y-2 text-xs text-slate-600 font-medium">
             <div className="flex items-center gap-1.5">
               <Users className="w-3.5 h-3.5 text-slate-400" />
@@ -121,17 +132,22 @@ export function CarCard({
           </div>
         </div>
 
-        {/* Bottom details: Proximity distance + Price */}
+        {/* Bottom details: Mileage + Used Car Price & Installment */}
         <div className="mt-5 pt-3 border-t border-slate-100 flex items-center justify-between">
-          <div className="text-xs text-slate-400 font-medium">
-            {car.distance_airport}
+          <div className="text-xs text-slate-500 font-semibold flex items-center gap-1">
+            <Gauge className="w-3.5 h-3.5 text-slate-400" />
+            <span>{car.mileage || "ไมล์แท้"}</span>
           </div>
 
-          <div className="flex items-baseline gap-1">
-            <span className="text-lg sm:text-xl font-extrabold text-slate-900 tracking-tight">
-              ${car.price_per_day}
-            </span>
-            <span className="text-xs text-slate-400 font-medium">/day</span>
+          <div className="text-right">
+            <div className="flex items-baseline justify-end gap-1">
+              <span className="text-lg sm:text-xl font-extrabold text-slate-900 tracking-tight">
+                ${displayPrice.toLocaleString()}
+              </span>
+            </div>
+            <div className="text-[11px] text-indigo-600 font-bold">
+              ผ่อน ~${monthlyPay}/เดือน
+            </div>
           </div>
         </div>
 

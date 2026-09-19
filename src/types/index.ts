@@ -22,7 +22,9 @@ export interface Car {
   seats: number;
   airbags: number;
   fuel_type: FuelType;
-  price_per_day: number;
+  price: number; // Total used car selling price (e.g. $14,800)
+  price_per_day?: number; // Optional alias
+  monthly_payment?: number; // Estimated monthly finance installment (e.g. $240/mo)
   discount_percent?: number;
   rating: number;
   review_count: number;
@@ -36,42 +38,38 @@ export interface Car {
   lat?: number;
   lng?: number;
   mileage?: string;
+  warranty?: string;
+  condition?: string;
   created_at?: string;
 }
 
 export interface FilterState {
   searchTerm: string;
-  pickupLocation: string;
-  dropoffLocation: string;
-  pickupDate: string;
-  dropoffDate: string;
-  isDifferentDropoff: boolean;
+  location: string;
   carTypes: string[];
   fuelTypes: string[];
   minPrice: number;
   maxPrice: number;
   transmission: string[];
   seats: number[];
-  sortBy: "recommended" | "price_asc" | "price_desc" | "rating";
+  condition: string;
+  sortBy: "recommended" | "price_asc" | "price_desc" | "rating" | "year_desc";
 }
 
-export interface BookingSubmission {
+export interface TestDriveInquiry {
   car_id: string;
   car_name: string;
-  pickup_location: string;
-  dropoff_location: string;
-  pickup_date: string;
-  dropoff_date: string;
   customer_name: string;
   customer_email: string;
   customer_phone: string;
-  total_price: number;
-  days: number;
+  preferred_date: string;
+  payment_method: "cash" | "finance";
+  down_payment?: number;
   notes?: string;
 }
 
-export interface BookingRecord extends BookingSubmission {
+export interface InquiryRecord extends TestDriveInquiry {
   id: string;
-  status: "pending" | "confirmed" | "cancelled";
+  status: "pending" | "contacted" | "completed";
   created_at: string;
 }

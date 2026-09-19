@@ -13,8 +13,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "AuraDrive - Modern Car Rentals & Used Car Marketplace",
-  description: "Explore and book from thousands of verified used and rental vehicles worldwide.",
+  title: "Car4U - ตลาดซื้อขายรถมือสองคุณภาพดี คัดเกรดพรีเมียม | Certified Used Cars",
+  description: "ค้นหาและซื้อขายรถมือสองคุณภาพ ตรวจเช็กสภาพ 200+ จุด การันตีไมล์แท้ ไม่เคยชนหนัก พร้อมบริการจัดไฟแนนซ์และทดลองขับ",
   icons: {
     icon: "/icon.svg",
     shortcut: "/icon.svg",
@@ -28,7 +28,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${geistSans.variable} ${geistMono.variable} scroll-smooth antialiased`}>
+    <html lang="th" className={`${geistSans.variable} ${geistMono.variable} scroll-smooth antialiased`}>
       <body className="min-h-screen flex flex-col bg-[#FDFDFE] text-slate-900 font-sans selection:bg-indigo-500 selection:text-white">
         {children}
       </body>

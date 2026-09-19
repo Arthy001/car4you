@@ -26,22 +26,19 @@ export default function HomePage() {
   const [showMap, setShowMap] = useState(false);
   const [showListCarModal, setShowListCarModal] = useState(false);
   const [showSettingsModal, setShowSettingsModal] = useState(false);
-  const [currentPage, setCurrentPage] = useState(3); // Matching Screenshot 4 active page 3
+  const [currentPage, setCurrentPage] = useState(3);
 
-  // Filter state
+  // Filter state for Used Car Marketplace
   const [filters, setFilters] = useState<FilterState>({
     searchTerm: "",
-    pickupLocation: "",
-    dropoffLocation: "",
-    pickupDate: "Sep 16",
-    dropoffDate: "Sep 19",
-    isDifferentDropoff: true,
+    location: "",
     carTypes: [],
     fuelTypes: [],
     minPrice: 0,
-    maxPrice: 600,
+    maxPrice: 50000,
     transmission: [],
     seats: [],
+    condition: "",
     sortBy: "recommended",
   });
 
@@ -67,26 +64,29 @@ export default function HomePage() {
     loadCars();
   }, []);
 
-  // Filter cars based on filter state
+  // Filter cars based on used car filter state
   const filteredCars = useMemo(() => {
     return cars.filter((car) => {
-      // Search / Location query
+      const carPrice = car.price || (car.price_per_day ? car.price_per_day * 100 : 15000);
+
+      // Search term (name, brand, category, description)
       if (filters.searchTerm) {
         const query = filters.searchTerm.toLowerCase();
         const matchesName = car.name.toLowerCase().includes(query);
         const matchesBrand = car.brand.toLowerCase().includes(query);
         const matchesLocation = car.location_address.toLowerCase().includes(query);
-        if (!matchesName && !matchesBrand && !matchesLocation) return false;
+        const matchesCategory = car.category.toLowerCase().includes(query);
+        if (!matchesName && !matchesBrand && !matchesLocation && !matchesCategory) return false;
       }
 
-      if (filters.pickupLocation) {
-        const query = filters.pickupLocation.toLowerCase();
+      // Location filter
+      if (filters.location) {
+        const query = filters.location.toLowerCase();
         const matchesLocation = car.location_address.toLowerCase().includes(query);
-        const matchesName = car.name.toLowerCase().includes(query);
-        if (!matchesLocation && !matchesName) return false;
+        if (!matchesLocation) return false;
       }
 
-      // Car Types
+      // Car Types (Sedan, SUV, Hatchback, Electric, Van, Compact)
       if (filters.carTypes.length > 0) {
         if (!filters.carTypes.includes(car.category)) {
           return false;
@@ -100,8 +100,13 @@ export default function HomePage() {
         }
       }
 
-      // Max price
-      if (car.price_per_day > filters.maxPrice) {
+      // Certified condition filter
+      if (filters.condition && car.condition !== filters.condition) {
+        return false;
+      }
+
+      // Max price filter
+      if (carPrice > filters.maxPrice) {
         return false;
       }
 
@@ -111,17 +116,16 @@ export default function HomePage() {
 
   // Handle Search submit from Hero section
   const handleHeroSearch = (params: {
-    pickup: string;
-    dropoff: string;
-    dates: string;
-    isDifferentDropoff: boolean;
+    searchTerm: string;
+    location: string;
+    priceRange: string;
+    isCertified: boolean;
   }) => {
     setFilters((prev) => ({
       ...prev,
-      pickupLocation: params.pickup,
-      dropoffLocation: params.dropoff,
-      isDifferentDropoff: params.isDifferentDropoff,
-      searchTerm: params.pickup,
+      searchTerm: params.searchTerm,
+      location: params.location,
+      condition: params.isCertified ? "Certified Pre-Owned" : "",
     }));
 
     // Smooth scroll down to listings
@@ -150,36 +154,33 @@ export default function HomePage() {
   const handleResetFilters = () => {
     setFilters({
       searchTerm: "",
-      pickupLocation: "",
-      dropoffLocation: "",
-      pickupDate: "Sep 16",
-      dropoffDate: "Sep 19",
-      isDifferentDropoff: true,
+      location: "",
       carTypes: [],
       fuelTypes: [],
       minPrice: 0,
-      maxPrice: 600,
+      maxPrice: 50000,
       transmission: [],
       seats: [],
+      condition: "",
       sortBy: "recommended",
     });
   };
 
   return (
     <div className="flex-1 flex flex-col">
-      {/* 1. Header / Navbar */}
+      {/* 1. Header / Navbar with Car4U branding */}
       <Navbar
         onOpenListCarModal={() => setShowListCarModal(true)}
         favoritesCount={favorites.length}
       />
 
-      {/* 2. Hero Section */}
+      {/* 2. Hero Section for Used Car Sales */}
       <HeroSection onSearch={handleHeroSearch} />
 
-      {/* 3. Main Listings Container */}
+      {/* 3. Main Used Cars Catalog */}
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex-1 w-full">
         
-        {/* Filter Bar (Header + Filter Pills) */}
+        {/* Filter Bar */}
         <FilterBar
           totalCount={3000}
           filters={filters}
@@ -198,7 +199,7 @@ export default function HomePage() {
           />
         )}
 
-        {/* 2-Column Car Cards Grid */}
+        {/* 2-Column Used Car Cards Grid */}
         <CarGrid
           cars={filteredCars}
           favorites={favorites}
