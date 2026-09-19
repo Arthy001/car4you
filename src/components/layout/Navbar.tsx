@@ -8,24 +8,38 @@ import {
   Bell, 
   Menu, 
   X, 
-  Compass, 
   PlusCircle, 
   ShieldCheck,
   Tag,
   Car
 } from "lucide-react";
 import { Logo } from "@/components/brand/Logo";
+import { Language, translations } from "@/lib/i18n/translations";
 
 interface NavbarProps {
   onOpenListCarModal?: () => void;
   favoritesCount?: number;
+  lang: Language;
+  onLanguageChange: (lang: Language) => void;
 }
 
-export function Navbar({ onOpenListCarModal, favoritesCount = 0 }: NavbarProps) {
+export function Navbar({ 
+  onOpenListCarModal, 
+  favoritesCount = 0,
+  lang,
+  onLanguageChange
+}: NavbarProps) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [categoryOpen, setCategoryOpen] = useState(false);
   const [servicesOpen, setServicesOpen] = useState(false);
   const [showNotifications, setShowNotifications] = useState(false);
+  const [langMenuOpen, setLangMenuOpen] = useState(false);
+
+  const t = translations[lang].nav;
+
+  const toggleLanguage = () => {
+    onLanguageChange(lang === "th" ? "en" : "th");
+  };
 
   return (
     <header className="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-slate-100 transition-all">
@@ -42,10 +56,11 @@ export function Navbar({ onOpenListCarModal, favoritesCount = 0 }: NavbarProps) 
                 onClick={() => {
                   setCategoryOpen(!categoryOpen);
                   setServicesOpen(false);
+                  setLangMenuOpen(false);
                 }}
                 className="flex items-center gap-1.5 text-sm font-semibold text-slate-700 hover:text-slate-900 px-3.5 py-2 rounded-full hover:bg-slate-50 transition"
               >
-                <span>ประเภทรถทั้งหมด</span>
+                <span>{t.categories}</span>
                 <ChevronDown className={`w-4 h-4 text-slate-500 transition-transform duration-200 ${categoryOpen ? "rotate-180" : ""}`} />
               </button>
 
@@ -60,7 +75,7 @@ export function Navbar({ onOpenListCarModal, favoritesCount = 0 }: NavbarProps) 
                     className="flex items-center gap-2.5 px-3 py-2 text-sm font-medium text-slate-800 rounded-xl hover:bg-slate-50 transition"
                   >
                     <Car className="w-4 h-4 text-indigo-600" />
-                    <span>รถเก๋ง (Sedan / Hatchback)</span>
+                    <span>{t.sedan}</span>
                   </a>
                   <a
                     href="#listings"
@@ -68,7 +83,7 @@ export function Navbar({ onOpenListCarModal, favoritesCount = 0 }: NavbarProps) 
                     className="flex items-center gap-2.5 px-3 py-2 text-sm font-medium text-slate-800 rounded-xl hover:bg-slate-50 transition"
                   >
                     <Car className="w-4 h-4 text-indigo-600" />
-                    <span>รถยนต์ไฟฟ้า (Electric EV)</span>
+                    <span>{t.ev}</span>
                   </a>
                   <a
                     href="#listings"
@@ -76,7 +91,7 @@ export function Navbar({ onOpenListCarModal, favoritesCount = 0 }: NavbarProps) 
                     className="flex items-center gap-2.5 px-3 py-2 text-sm font-medium text-slate-800 rounded-xl hover:bg-slate-50 transition"
                   >
                     <Car className="w-4 h-4 text-indigo-600" />
-                    <span>รถอเนกประสงค์ (SUV / Crossover)</span>
+                    <span>{t.suv}</span>
                   </a>
                   <a
                     href="#listings"
@@ -84,7 +99,7 @@ export function Navbar({ onOpenListCarModal, favoritesCount = 0 }: NavbarProps) 
                     className="flex items-center gap-2.5 px-3 py-2 text-sm font-medium text-slate-800 rounded-xl hover:bg-slate-50 transition"
                   >
                     <Car className="w-4 h-4 text-indigo-600" />
-                    <span>รถตู้ (Van / MPV)</span>
+                    <span>{t.van}</span>
                   </a>
                 </div>
               )}
@@ -99,10 +114,11 @@ export function Navbar({ onOpenListCarModal, favoritesCount = 0 }: NavbarProps) 
                 onClick={() => {
                   setServicesOpen(!servicesOpen);
                   setCategoryOpen(false);
+                  setLangMenuOpen(false);
                 }}
                 className="flex items-center gap-1.5 text-sm font-medium text-slate-700 hover:text-slate-900 px-3 py-2 rounded-full hover:bg-slate-50 transition"
               >
-                <span>บริการของเรา</span>
+                <span>{t.services}</span>
                 <ChevronDown className={`w-4 h-4 text-slate-500 transition-transform duration-200 ${servicesOpen ? "rotate-180" : ""}`} />
               </button>
 
@@ -114,7 +130,7 @@ export function Navbar({ onOpenListCarModal, favoritesCount = 0 }: NavbarProps) 
                     className="flex items-center gap-2 px-3 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50 rounded-xl transition"
                   >
                     <Tag className="w-4 h-4 text-indigo-600" />
-                    <span>ซื้อรถมือสองคัดเกรด</span>
+                    <span>{t.buyCar}</span>
                   </a>
                   <button 
                     onClick={() => {
@@ -124,21 +140,27 @@ export function Navbar({ onOpenListCarModal, favoritesCount = 0 }: NavbarProps) 
                     className="w-full text-left flex items-center gap-2 px-3 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50 rounded-xl transition"
                   >
                     <PlusCircle className="w-4 h-4 text-indigo-600" />
-                    <span>ลงขายรถฟรี</span>
+                    <span>{t.sellFree}</span>
                   </button>
                   <div className="px-3 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50 rounded-xl transition flex items-center gap-2 cursor-pointer">
                     <ShieldCheck className="w-4 h-4 text-emerald-600" />
-                    <span>บริการตรวจสภาพ 200 จุด</span>
+                    <span>{t.inspection}</span>
                   </div>
                 </div>
               )}
             </div>
 
-            {/* Currency / Language */}
-            <div className="flex items-center gap-1 text-slate-600 hover:text-slate-900 px-2.5 py-1.5 rounded-full hover:bg-slate-50 cursor-pointer text-sm font-medium transition">
-              <Globe className="w-4 h-4" />
-              <span>/</span>
-              <span className="text-xs font-bold text-indigo-600">THB / USD</span>
+            {/* Language Switcher Button (TH / EN) */}
+            <div className="relative">
+              <button
+                type="button"
+                onClick={toggleLanguage}
+                className="flex items-center gap-1.5 text-slate-700 hover:text-slate-900 px-3 py-1.5 rounded-full border border-slate-200 hover:border-slate-300 hover:bg-slate-50 transition text-xs font-bold"
+                aria-label="Change language"
+              >
+                <Globe className="w-3.5 h-3.5 text-slate-500" />
+                <span>{lang === "th" ? "ไทย (TH)" : "English (EN)"}</span>
+              </button>
             </div>
 
             {/* Sell Car CTA Button */}
@@ -147,7 +169,7 @@ export function Navbar({ onOpenListCarModal, favoritesCount = 0 }: NavbarProps) 
               className="px-4 py-2 text-sm font-bold text-slate-900 border border-slate-300 hover:border-indigo-600 hover:text-indigo-600 rounded-full hover:bg-slate-50 transition shadow-xs flex items-center gap-2"
             >
               <PlusCircle className="w-4 h-4 text-indigo-600" />
-              <span>ลงขายรถของคุณ</span>
+              <span>{t.sellCar}</span>
             </button>
 
             {/* Notification Bell */}
@@ -164,13 +186,13 @@ export function Navbar({ onOpenListCarModal, favoritesCount = 0 }: NavbarProps) 
               {showNotifications && (
                 <div className="absolute right-0 mt-2 w-72 bg-white rounded-2xl shadow-xl border border-slate-100 p-3 z-50 animate-in fade-in slide-in-from-top-2 duration-200">
                   <div className="flex items-center justify-between pb-2 border-b border-slate-100">
-                    <span className="text-sm font-semibold text-slate-900">การแจ้งเตือน</span>
-                    <span className="text-xs text-indigo-600 font-medium">อ่านทั้งหมด</span>
+                    <span className="text-sm font-semibold text-slate-900">{t.notifications}</span>
+                    <span className="text-xs text-indigo-600 font-medium">Clear</span>
                   </div>
                   <div className="py-2 space-y-2">
                     <div className="p-2 rounded-xl bg-indigo-50/60 text-xs text-slate-700">
-                      <p className="font-semibold text-indigo-900">โปรโมชั่นพิเศษ!</p>
-                      <p className="text-slate-600">รถตู้และ SUV คัดเกรด ลดพิเศษ 20% ผ่อนเริ่มต้น 4,xxx บ./ด.</p>
+                      <p className="font-semibold text-indigo-900">Special Promo!</p>
+                      <p className="text-slate-600">{lang === "th" ? "รถตู้และ SUV คัดเกรด ลดพิเศษ 20% ผ่อนเริ่มต้น 4,xxx บ./ด." : "Selected SUVs and Vans with 20% discount this month."}</p>
                     </div>
                   </div>
                 </div>
@@ -193,6 +215,15 @@ export function Navbar({ onOpenListCarModal, favoritesCount = 0 }: NavbarProps) 
 
           {/* Mobile Menu Button */}
           <div className="flex lg:hidden items-center gap-2">
+            {/* Mobile Language Button */}
+            <button
+              type="button"
+              onClick={toggleLanguage}
+              className="px-2.5 py-1 text-xs font-bold rounded-lg border border-slate-200 text-slate-700"
+            >
+              {lang === "th" ? "TH" : "EN"}
+            </button>
+            
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
               className="p-2.5 text-slate-700 hover:bg-slate-100 rounded-xl transition"
@@ -212,7 +243,7 @@ export function Navbar({ onOpenListCarModal, favoritesCount = 0 }: NavbarProps) 
             onClick={() => setMobileMenuOpen(false)}
             className="block px-3 py-2 rounded-xl font-semibold text-slate-800 hover:bg-slate-50"
           >
-            ค้นหารถมือสอง
+            {t.categories}
           </a>
           <button
             onClick={() => {
@@ -221,7 +252,7 @@ export function Navbar({ onOpenListCarModal, favoritesCount = 0 }: NavbarProps) 
             }}
             className="w-full text-left px-3 py-2 rounded-xl font-semibold text-indigo-600 hover:bg-indigo-50"
           >
-            + ลงขายรถของคุณ
+            + {t.sellCar}
           </button>
         </div>
       )}

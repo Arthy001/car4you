@@ -1,6 +1,7 @@
 "use client";
 
 import React from "react";
+import Link from "next/link";
 import { 
   Star, 
   MapPin, 
@@ -10,7 +11,6 @@ import {
   ShieldCheck, 
   Zap, 
   Gauge,
-  Calendar,
   Sparkles
 } from "lucide-react";
 import { Car } from "@/types";
@@ -19,23 +19,24 @@ interface CarCardProps {
   car: Car;
   isFavorite: boolean;
   onToggleFavorite: (carId: string) => void;
-  onSelectCar: (car: Car) => void;
+  onSelectCar?: (car: Car) => void;
 }
 
 export function CarCard({
   car,
   isFavorite,
   onToggleFavorite,
-  onSelectCar,
 }: CarCardProps) {
   const isElectric = car.fuel_type === "Electric";
   const displayPrice = car.price || (car.price_per_day ? car.price_per_day * 100 : 15000);
   const monthlyPay = car.monthly_payment || Math.round(displayPrice / 60);
 
   return (
-    <div 
-      onClick={() => onSelectCar(car)}
-      className="group bg-white rounded-3xl border border-slate-100/90 hover:border-slate-200/90 p-5 shadow-xs hover:shadow-xl transition-all duration-300 flex flex-col sm:flex-row gap-5 cursor-pointer relative"
+    <Link 
+      href={`/cars/${car.id}`}
+      target="_blank"
+      rel="noopener noreferrer"
+      className="group bg-white rounded-3xl border border-slate-100/90 hover:border-slate-200/90 p-5 shadow-xs hover:shadow-xl transition-all duration-300 flex flex-col sm:flex-row gap-5 cursor-pointer relative block"
     >
       {/* Top Left Discount or Certified Badge */}
       {car.discount_percent && car.discount_percent > 0 ? (
@@ -53,6 +54,7 @@ export function CarCard({
       <button
         type="button"
         onClick={(e) => {
+          e.preventDefault();
           e.stopPropagation();
           onToggleFavorite(car.id);
         }}
@@ -68,12 +70,12 @@ export function CarCard({
         />
       </button>
 
-      {/* Left Column: Car Image */}
-      <div className="w-full sm:w-[45%] h-44 sm:h-auto rounded-2xl bg-gradient-to-b from-slate-50 to-slate-100/60 flex items-center justify-center p-3 relative overflow-hidden group-hover:bg-slate-100/50 transition-colors">
+      {/* Left Column: Car Image with fixed aspect ratio */}
+      <div className="w-full sm:w-[45%] aspect-[4/3] rounded-2xl bg-slate-100 relative overflow-hidden shrink-0">
         <img
           src={car.image_url}
           alt={car.name}
-          className="w-full h-full object-contain object-center transform group-hover:scale-108 transition-transform duration-500 filter drop-shadow-sm"
+          className="w-full h-full object-cover object-center transform group-hover:scale-105 transition-transform duration-500"
           loading="lazy"
         />
       </div>
@@ -153,7 +155,7 @@ export function CarCard({
 
       </div>
 
-    </div>
+    </Link>
   );
 }
 

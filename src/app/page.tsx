@@ -14,8 +14,12 @@ import SettingsModal from "@/components/common/SettingsModal";
 import { initialCarsData } from "@/lib/data/mockCars";
 import { Car, FilterState } from "@/types";
 import { getSupabaseBrowserClient, isSupabaseConfigured } from "@/lib/supabase/client";
+import { Language } from "@/lib/i18n/translations";
 
 export default function HomePage() {
+  // Language state (defaults to Thai)
+  const [lang, setLang] = useState<Language>("th");
+
   // Cars data state
   const [cars, setCars] = useState<Car[]>(initialCarsData);
   const [favorites, setFavorites] = useState<string[]>(["car-1", "car-2", "car-4", "car-7", "car-8"]);
@@ -171,10 +175,15 @@ export default function HomePage() {
       <Navbar
         onOpenListCarModal={() => setShowListCarModal(true)}
         favoritesCount={favorites.length}
+        lang={lang}
+        onLanguageChange={setLang}
       />
 
       {/* 2. Hero Section for Used Car Sales */}
-      <HeroSection onSearch={handleHeroSearch} />
+      <HeroSection 
+        lang={lang}
+        onSearch={handleHeroSearch} 
+      />
 
       {/* 3. Main Used Cars Catalog */}
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex-1 w-full">
@@ -187,6 +196,7 @@ export default function HomePage() {
           showMap={showMap}
           onToggleMap={() => setShowMap(!showMap)}
           onOpenSettings={() => setShowSettingsModal(true)}
+          lang={lang}
         />
 
         {/* Optional Map View */}
@@ -216,7 +226,7 @@ export default function HomePage() {
       </main>
 
       {/* 4. Footer */}
-      <Footer />
+      <Footer lang={lang} />
 
       {/* Modals */}
       <CarModal

@@ -1,8 +1,15 @@
 import React from "react";
 import Link from "next/link";
 import { Logo } from "@/components/brand/Logo";
+import { Language, translations } from "@/lib/i18n/translations";
 
-export function Footer() {
+interface FooterProps {
+  lang?: Language;
+}
+
+export function Footer({ lang = "th" }: FooterProps) {
+  const t = translations[lang].footer;
+
   return (
     <footer className="bg-white border-t border-slate-100 pt-16 pb-12 transition-colors">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -15,7 +22,7 @@ export function Footer() {
             <Logo size="md" />
 
             <p className="text-xs sm:text-sm text-slate-500 max-w-xs leading-relaxed">
-              Car4U ตลาดซื้อขายรถมือสองคุณภาพคัดเกรด A อันดับ 1 การันตีไมล์แท้ ไม่เคยชนหนักหรือน้ำท่วม พร้อมรับประกันเครื่องเกียร์และบริการจัดไฟแนนซ์ครบวงจร
+              {t.desc}
             </p>
 
             {/* Social Icons matching mockup */}
@@ -74,47 +81,47 @@ export function Footer() {
             </div>
           </div>
 
-          {/* Column 1: ซื้อรถมือสอง */}
+          {/* Column 1: Buy Cars */}
           <div className="col-span-1 md:col-span-2 space-y-3">
-            <h4 className="text-xs font-bold text-slate-900 uppercase tracking-wider">ซื้อรถมือสอง</h4>
+            <h4 className="text-xs font-bold text-slate-900 uppercase tracking-wider">{t.col1Title}</h4>
             <ul className="space-y-2 text-xs sm:text-sm text-slate-500">
-              <li><Link href="#listings" className="hover:text-slate-900 transition">รถเก๋ง 4-5 ประตู</Link></li>
-              <li><Link href="#listings" className="hover:text-slate-900 transition">รถยนต์ไฟฟ้า EV</Link></li>
-              <li><Link href="#listings" className="hover:text-slate-900 transition">รถ SUV อเนกประสงค์</Link></li>
-              <li><Link href="#listings" className="hover:text-slate-900 transition">รถตู้และรถครอบครัว</Link></li>
+              <li><Link href="#listings" className="hover:text-slate-900 transition">{t.col1Item1}</Link></li>
+              <li><Link href="#listings" className="hover:text-slate-900 transition">{t.col1Item2}</Link></li>
+              <li><Link href="#listings" className="hover:text-slate-900 transition">{t.col1Item3}</Link></li>
+              <li><Link href="#listings" className="hover:text-slate-900 transition">{t.col1Item4}</Link></li>
             </ul>
           </div>
 
-          {/* Column 2: บริการของเรา */}
+          {/* Column 2: Services */}
           <div className="col-span-1 md:col-span-2 space-y-3">
-            <h4 className="text-xs font-bold text-slate-900 uppercase tracking-wider">บริการ</h4>
+            <h4 className="text-xs font-bold text-slate-900 uppercase tracking-wider">{t.col2Title}</h4>
             <ul className="space-y-2 text-xs sm:text-sm text-slate-500">
-              <li><Link href="#listings" className="hover:text-slate-900 transition">ลงขายรถมือสองฟรี</Link></li>
-              <li><Link href="#listings" className="hover:text-slate-900 transition">คำนวณค่างวดไฟแนนซ์</Link></li>
-              <li><Link href="#listings" className="hover:text-slate-900 transition">นัดหมายทดลองขับ</Link></li>
-              <li><Link href="#listings" className="hover:text-slate-900 transition">ตรวจสภาพรถ 200 จุด</Link></li>
+              <li><Link href="#listings" className="hover:text-slate-900 transition">{t.col2Item1}</Link></li>
+              <li><Link href="#listings" className="hover:text-slate-900 transition">{t.col2Item2}</Link></li>
+              <li><Link href="#listings" className="hover:text-slate-900 transition">{t.col2Item3}</Link></li>
+              <li><Link href="#listings" className="hover:text-slate-900 transition">{t.col2Item4}</Link></li>
             </ul>
           </div>
 
-          {/* Column 3: บริษัท */}
+          {/* Column 3: Company */}
           <div className="col-span-1 md:col-span-2 space-y-3">
-            <h4 className="text-xs font-bold text-slate-900 uppercase tracking-wider">Car4U</h4>
+            <h4 className="text-xs font-bold text-slate-900 uppercase tracking-wider">{t.col3Title}</h4>
             <ul className="space-y-2 text-xs sm:text-sm text-slate-500">
-              <li><Link href="/" className="hover:text-slate-900 transition">เกี่ยวกับ Car4U</Link></li>
-              <li><Link href="/" className="hover:text-slate-900 transition">ข่าวสารและบทความ</Link></li>
-              <li><Link href="/" className="hover:text-slate-900 transition">ติดต่อเรา</Link></li>
-              <li><Link href="/" className="hover:text-slate-900 transition">สาขาให้บริการ</Link></li>
+              <li><Link href="/" className="hover:text-slate-900 transition">{t.col3Item1}</Link></li>
+              <li><Link href="/" className="hover:text-slate-900 transition">{t.col3Item2}</Link></li>
+              <li><Link href="/" className="hover:text-slate-900 transition">{t.col3Item3}</Link></li>
+              <li><Link href="/" className="hover:text-slate-900 transition">{t.col3Item4}</Link></li>
             </ul>
           </div>
 
-          {/* Column 4: ช่วยเหลือ */}
+          {/* Column 4: Support */}
           <div className="col-span-1 md:col-span-2 space-y-3">
-            <h4 className="text-xs font-bold text-slate-900 uppercase tracking-wider">ช่วยเหลือ</h4>
+            <h4 className="text-xs font-bold text-slate-900 uppercase tracking-wider">{t.col4Title}</h4>
             <ul className="space-y-2 text-xs sm:text-sm text-slate-500">
-              <li><Link href="/" className="hover:text-slate-900 transition">คำถามที่พบบ่อย</Link></li>
-              <li><Link href="/" className="hover:text-slate-900 transition">เอกสารการจัดไฟแนนซ์</Link></li>
-              <li><Link href="/" className="hover:text-slate-900 transition">เงื่อนไขการรับประกัน</Link></li>
-              <li><Link href="/" className="hover:text-slate-900 transition">รถที่บันทึกไว้</Link></li>
+              <li><Link href="/" className="hover:text-slate-900 transition">{t.col4Item1}</Link></li>
+              <li><Link href="/" className="hover:text-slate-900 transition">{t.col4Item2}</Link></li>
+              <li><Link href="/" className="hover:text-slate-900 transition">{t.col4Item3}</Link></li>
+              <li><Link href="/" className="hover:text-slate-900 transition">{t.col4Item4}</Link></li>
             </ul>
           </div>
 
@@ -122,11 +129,11 @@ export function Footer() {
 
         {/* Bottom Line Copyright */}
         <div className="pt-8 border-t border-slate-100 flex flex-col sm:flex-row items-center justify-between text-xs text-slate-400 gap-4">
-          <p>© 2026 Car4U Co., Ltd. All rights reserved.</p>
+          <p>{t.copyright}</p>
           <div className="flex items-center gap-6">
-            <Link href="/" className="hover:text-slate-600 transition">นโยบายความเป็นส่วนตัว</Link>
-            <Link href="/" className="hover:text-slate-600 transition">ข้อกำหนดและเงื่อนไข</Link>
-            <Link href="/" className="hover:text-slate-600 transition">แผนผังเว็บไซต์</Link>
+            <Link href="/" className="hover:text-slate-600 transition">{t.privacy}</Link>
+            <Link href="/" className="hover:text-slate-600 transition">{t.terms}</Link>
+            <Link href="/" className="hover:text-slate-600 transition">{t.sitemap}</Link>
           </div>
         </div>
 
