@@ -1,69 +1,240 @@
-import Image from "next/image";
+"use client";
 
-export default function Home() {
+import React, { useState, useEffect, useMemo } from "react";
+import Navbar from "@/components/layout/Navbar";
+import HeroSection from "@/components/home/HeroSection";
+import FilterBar from "@/components/cars/FilterBar";
+import CarGrid from "@/components/cars/CarGrid";
+import MapView from "@/components/cars/MapView";
+import Pagination from "@/components/common/Pagination";
+import Footer from "@/components/layout/Footer";
+import CarModal from "@/components/cars/CarModal";
+import ListCarModal from "@/components/cars/ListCarModal";
+import SettingsModal from "@/components/common/SettingsModal";
+import { initialCarsData } from "@/lib/data/mockCars";
+import { Car, FilterState } from "@/types";
+import { getSupabaseBrowserClient, isSupabaseConfigured } from "@/lib/supabase/client";
+
+export default function HomePage() {
+  // Cars data state
+  const [cars, setCars] = useState<Car[]>(initialCarsData);
+  const [favorites, setFavorites] = useState<string[]>(["car-1", "car-2", "car-4", "car-7", "car-8"]);
+  const [loading, setLoading] = useState(false);
+
+  // UI state
+  const [selectedCar, setSelectedCar] = useState<Car | null>(null);
+  const [showMap, setShowMap] = useState(false);
+  const [showListCarModal, setShowListCarModal] = useState(false);
+  const [showSettingsModal, setShowSettingsModal] = useState(false);
+  const [currentPage, setCurrentPage] = useState(3); // Matching Screenshot 4 active page 3
+
+  // Filter state
+  const [filters, setFilters] = useState<FilterState>({
+    searchTerm: "",
+    pickupLocation: "",
+    dropoffLocation: "",
+    pickupDate: "Sep 16",
+    dropoffDate: "Sep 19",
+    isDifferentDropoff: true,
+    carTypes: [],
+    fuelTypes: [],
+    minPrice: 0,
+    maxPrice: 600,
+    transmission: [],
+    seats: [],
+    sortBy: "recommended",
+  });
+
+  // Fetch cars from Supabase if configured
+  useEffect(() => {
+    async function loadCars() {
+      if (!isSupabaseConfigured) return;
+      try {
+        setLoading(true);
+        const supabase = getSupabaseBrowserClient();
+        if (supabase) {
+          const { data, error } = await supabase.from("cars").select("*");
+          if (!error && data && data.length > 0) {
+            setCars(data as Car[]);
+          }
+        }
+      } catch (err) {
+        console.warn("Supabase fetch error, fallback to initial dataset:", err);
+      } finally {
+        setLoading(false);
+      }
+    }
+    loadCars();
+  }, []);
+
+  // Filter cars based on filter state
+  const filteredCars = useMemo(() => {
+    return cars.filter((car) => {
+      // Search / Location query
+      if (filters.searchTerm) {
+        const query = filters.searchTerm.toLowerCase();
+        const matchesName = car.name.toLowerCase().includes(query);
+        const matchesBrand = car.brand.toLowerCase().includes(query);
+        const matchesLocation = car.location_address.toLowerCase().includes(query);
+        if (!matchesName && !matchesBrand && !matchesLocation) return false;
+      }
+
+      if (filters.pickupLocation) {
+        const query = filters.pickupLocation.toLowerCase();
+        const matchesLocation = car.location_address.toLowerCase().includes(query);
+        const matchesName = car.name.toLowerCase().includes(query);
+        if (!matchesLocation && !matchesName) return false;
+      }
+
+      // Car Types
+      if (filters.carTypes.length > 0) {
+        if (!filters.carTypes.includes(car.category)) {
+          return false;
+        }
+      }
+
+      // Fuel Types
+      if (filters.fuelTypes.length > 0) {
+        if (!filters.fuelTypes.includes(car.fuel_type)) {
+          return false;
+        }
+      }
+
+      // Max price
+      if (car.price_per_day > filters.maxPrice) {
+        return false;
+      }
+
+      return true;
+    });
+  }, [cars, filters]);
+
+  // Handle Search submit from Hero section
+  const handleHeroSearch = (params: {
+    pickup: string;
+    dropoff: string;
+    dates: string;
+    isDifferentDropoff: boolean;
+  }) => {
+    setFilters((prev) => ({
+      ...prev,
+      pickupLocation: params.pickup,
+      dropoffLocation: params.dropoff,
+      isDifferentDropoff: params.isDifferentDropoff,
+      searchTerm: params.pickup,
+    }));
+
+    // Smooth scroll down to listings
+    const listingsEl = document.getElementById("listings");
+    if (listingsEl) {
+      listingsEl.scrollIntoView({ behavior: "smooth" });
+    }
+  };
+
+  // Toggle favorite
+  const handleToggleFavorite = (carId: string) => {
+    setFavorites((prev) => {
+      if (prev.includes(carId)) {
+        return prev.filter((id) => id !== carId);
+      } else {
+        return [...prev, carId];
+      }
+    });
+  };
+
+  // Add new car from ListCarModal
+  const handleCarAdded = (newCar: Car) => {
+    setCars((prev) => [newCar, ...prev]);
+  };
+
+  const handleResetFilters = () => {
+    setFilters({
+      searchTerm: "",
+      pickupLocation: "",
+      dropoffLocation: "",
+      pickupDate: "Sep 16",
+      dropoffDate: "Sep 19",
+      isDifferentDropoff: true,
+      carTypes: [],
+      fuelTypes: [],
+      minPrice: 0,
+      maxPrice: 600,
+      transmission: [],
+      seats: [],
+      sortBy: "recommended",
+    });
+  };
+
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert h-5 w-[100px]"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
+    <div className="flex-1 flex flex-col">
+      {/* 1. Header / Navbar */}
+      <Navbar
+        onOpenListCarModal={() => setShowListCarModal(true)}
+        favoritesCount={favorites.length}
+      />
+
+      {/* 2. Hero Section */}
+      <HeroSection onSearch={handleHeroSearch} />
+
+      {/* 3. Main Listings Container */}
+      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex-1 w-full">
+        
+        {/* Filter Bar (Header + Filter Pills) */}
+        <FilterBar
+          totalCount={3000}
+          filters={filters}
+          onFilterChange={setFilters}
+          showMap={showMap}
+          onToggleMap={() => setShowMap(!showMap)}
+          onOpenSettings={() => setShowSettingsModal(true)}
         />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the{" "}
-            <code className="rounded bg-black/[.06] px-1.5 py-0.5 font-mono text-[0.9em] dark:bg-white/[.08]">
-              page.tsx
-            </code>{" "}
-            file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
-        </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert h-[14px] w-4"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={14}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
+
+        {/* Optional Map View */}
+        {showMap && (
+          <MapView
+            cars={filteredCars}
+            onSelectCar={(car) => setSelectedCar(car)}
+            onClose={() => setShowMap(false)}
+          />
+        )}
+
+        {/* 2-Column Car Cards Grid */}
+        <CarGrid
+          cars={filteredCars}
+          favorites={favorites}
+          onToggleFavorite={handleToggleFavorite}
+          onSelectCar={(car) => setSelectedCar(car)}
+          onResetFilters={handleResetFilters}
+        />
+
+        {/* Pagination Bar */}
+        <Pagination
+          currentPage={currentPage}
+          totalPages={66}
+          onPageChange={setCurrentPage}
+        />
       </main>
+
+      {/* 4. Footer */}
+      <Footer />
+
+      {/* Modals */}
+      <CarModal
+        car={selectedCar}
+        onClose={() => setSelectedCar(null)}
+        onBookingSuccess={() => {}}
+      />
+
+      <ListCarModal
+        isOpen={showListCarModal}
+        onClose={() => setShowListCarModal(false)}
+        onCarAdded={handleCarAdded}
+      />
+
+      <SettingsModal
+        isOpen={showSettingsModal}
+        onClose={() => setShowSettingsModal(false)}
+      />
     </div>
   );
 }
