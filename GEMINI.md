@@ -8,6 +8,10 @@
    - หากพบข้อผิดพลาด ให้รายงานปัญหาและแนวทางแก้ไขก่อนดำเนินการ
    - รักษาความต่อเนื่องของโค้ดเดิม (Preserve existing functionality, comments, and structure)
 
+2. **ห้าม Commit หรือ Push ขึ้น Git เองโดยพลการ (Strict Rule: Do not commit or push to Git without explicit user request / approval)**
+   - ห้ามรันคำสั่ง `git commit`, `git push`, หรือเปลี่ยนแปลง branch บน remote repository เองโดยเด็ดขาด ยกเว้นเมื่อผู้ใช้สั่งการหรือระบุให้ทำอย่างชัดเจนเท่านั้น
+   - ทุกครั้งที่ทำการพัฒนาหรือแก้ไขไฟล์เสร็จสิ้น ให้รายงานผลการดำเนินงานแก่ผู้ใช้เพื่อตรวจสอบก่อนเสมอ และจะไม่ทำ Git commit/push หากผู้ใช้ไม่ได้สั่ง
+
 ---
 
 ## 🚗 Project Overview & Tech Stack - Car4U

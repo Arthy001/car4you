@@ -116,16 +116,15 @@ export default function HomePage() {
 
   // Handle Search submit from Hero section
   const handleHeroSearch = (params: {
-    searchTerm: string;
-    location: string;
-    priceRange: string;
-    isCertified: boolean;
+    pickup: string;
+    dropoff: string;
+    dates: string;
+    isDifferentDropoff: boolean;
   }) => {
     setFilters((prev) => ({
       ...prev,
-      searchTerm: params.searchTerm,
-      location: params.location,
-      condition: params.isCertified ? "Certified Pre-Owned" : "",
+      searchTerm: params.pickup === "City or Airport" ? "" : params.pickup,
+      location: params.dropoff === "City or Airport" ? "" : params.dropoff,
     }));
 
     // Smooth scroll down to listings

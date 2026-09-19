@@ -1,15 +1,18 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Plus_Jakarta_Sans, Noto_Sans_Thai } from "next/font/google";
 import "./globals.css";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const plusJakartaSans = Plus_Jakarta_Sans({
   subsets: ["latin"],
+  variable: "--font-plus-jakarta",
+  display: "swap",
 });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
+const notoSansThai = Noto_Sans_Thai({
+  weight: ["300", "400", "500", "600", "700", "800"],
+  subsets: ["thai"],
+  variable: "--font-noto-thai",
+  display: "swap",
 });
 
 export const metadata: Metadata = {
@@ -28,7 +31,10 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="th" className={`${geistSans.variable} ${geistMono.variable} scroll-smooth antialiased`}>
+    <html 
+      lang="th" 
+      className={`${plusJakartaSans.variable} ${notoSansThai.variable} scroll-smooth antialiased`}
+    >
       <body className="min-h-screen flex flex-col bg-[#FDFDFE] text-slate-900 font-sans selection:bg-indigo-500 selection:text-white">
         {children}
       </body>

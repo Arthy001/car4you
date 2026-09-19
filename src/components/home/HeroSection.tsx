@@ -6,40 +6,40 @@ import {
   Car, 
   MapPin, 
   Search,
-  BadgePercent,
-  Sparkles
+  Calendar,
+  Globe
 } from "lucide-react";
 
 interface HeroSectionProps {
   onSearch: (params: {
-    searchTerm: string;
-    location: string;
-    priceRange: string;
-    isCertified: boolean;
+    pickup: string;
+    dropoff: string;
+    dates: string;
+    isDifferentDropoff: boolean;
   }) => void;
 }
 
 export function HeroSection({ onSearch }: HeroSectionProps) {
-  const [isCertified, setIsCertified] = useState(false);
-  const [modelSearch, setModelSearch] = useState("");
-  const [locationSearch, setLocationSearch] = useState("");
-  const [priceBudget, setPriceBudget] = useState("");
+  const [isDifferentDropoff, setIsDifferentDropoff] = useState(true);
+  const [pickupLocation, setPickupLocation] = useState("City or Airport");
+  const [dropoffLocation, setDropoffLocation] = useState("City or Airport");
+  const [dateRange, setDateRange] = useState("Sep 16 - Sep 19");
 
   const handleSearchSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     onSearch({
-      searchTerm: modelSearch,
-      location: locationSearch,
-      priceRange: priceBudget,
-      isCertified,
+      pickup: pickupLocation,
+      dropoff: isDifferentDropoff ? dropoffLocation : pickupLocation,
+      dates: dateRange,
+      isDifferentDropoff,
     });
   };
 
   return (
     <section className="relative pt-6 pb-20 lg:pb-28 overflow-hidden">
       {/* Background Soft Glows */}
-      <div className="absolute top-10 left-[-10%] w-[500px] h-[500px] rounded-full bg-indigo-100/40 blur-3xl -z-10 pointer-events-none" />
-      <div className="absolute top-20 right-[-5%] w-[450px] h-[450px] rounded-full bg-purple-100/40 blur-3xl -z-10 pointer-events-none" />
+      <div className="absolute top-10 left-[-10%] w-[500px] h-[500px] rounded-full bg-pink-100/30 blur-3xl -z-10 pointer-events-none" />
+      <div className="absolute top-20 right-[-5%] w-[450px] h-[450px] rounded-full bg-indigo-100/40 blur-3xl -z-10 pointer-events-none" />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
@@ -48,29 +48,24 @@ export function HeroSection({ onSearch }: HeroSectionProps) {
           
           {/* Left Headline */}
           <div className="lg:col-span-6 space-y-6">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-indigo-50 border border-indigo-100 text-xs font-bold text-indigo-700">
-              <Sparkles className="w-3.5 h-3.5 text-indigo-600" />
-              <span>ตลาดซื้อขายรถมือสอง คุณภาพคัดเกรด A อันดับ 1</span>
-            </div>
-
             <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight text-slate-900 leading-[1.15]">
-              Used cars for sale
+              Car rentals
             </h1>
 
-            {/* Badges / Metrics */}
+            {/* Badges / Metrics matching template */}
             <div className="flex flex-wrap items-center gap-6 text-slate-600 text-sm font-medium">
               <div className="flex items-center gap-2">
-                <div className="p-1.5 rounded-full bg-emerald-50 text-emerald-600">
-                  <ShieldCheck className="w-4 h-4" />
+                <div className="p-1.5 rounded-full bg-slate-100 text-slate-700">
+                  <Globe className="w-4 h-4 text-slate-700" />
                 </div>
-                <span>ตรวจเช็กสภาพ 200+ จุด</span>
+                <span>Worldwide</span>
               </div>
 
               <div className="flex items-center gap-2">
-                <div className="p-1.5 rounded-full bg-indigo-50 text-indigo-600">
-                  <Car className="w-4 h-4" />
+                <div className="p-1.5 rounded-full bg-slate-100 text-slate-700">
+                  <Car className="w-4 h-4 text-slate-700" />
                 </div>
-                <span>รถพร้อมขายกว่า 3,000 คัน</span>
+                <span>3,000 cars</span>
               </div>
             </div>
           </div>
@@ -114,101 +109,141 @@ export function HeroSection({ onSearch }: HeroSectionProps) {
           </div>
         </div>
 
-        {/* Floating Search Bar Card */}
+        {/* Floating Search Bar Card matching Mockup Image 3 (Pixel-for-Pixel) */}
         <div className="relative -mt-6 lg:-mt-10 z-20">
-          <div className="bg-white rounded-3xl p-4 sm:p-6 shadow-xl shadow-slate-200/70 border border-slate-100 max-w-5xl mx-auto">
+          <div className="bg-white rounded-t-[24px] rounded-b-[48px] px-6 sm:px-8 pt-5 sm:pt-6 pb-6 sm:pb-7 shadow-[0_12px_40px_rgba(0,0,0,0.06)] border border-slate-100 max-w-5xl mx-auto">
             
-            {/* Top Toggle Switcher */}
-            <div className="flex items-center gap-2 mb-4">
+            {/* Top Toggle Switcher: Different drop off vs Same drop off */}
+            <div className="flex items-center gap-2.5 mb-4">
               <button
                 type="button"
-                onClick={() => setIsCertified(false)}
-                className={`px-4 py-1.5 rounded-full text-xs sm:text-sm font-bold transition-all ${
-                  !isCertified
-                    ? "bg-black text-white shadow-xs"
-                    : "bg-transparent text-slate-600 hover:text-slate-900"
+                onClick={() => setIsDifferentDropoff(true)}
+                className={`px-4 sm:px-5 py-2 rounded-full text-[13px] font-semibold transition-all duration-200 ${
+                  isDifferentDropoff
+                    ? "bg-black text-white shadow-sm"
+                    : "bg-white text-slate-700 border border-slate-200 hover:border-slate-300"
                 }`}
               >
-                รถมือสองทั้งหมด (All Cars)
+                Different drop off
               </button>
 
               <button
                 type="button"
-                onClick={() => setIsCertified(true)}
-                className={`px-4 py-1.5 rounded-full text-xs sm:text-sm font-bold transition-all ${
-                  isCertified
-                    ? "bg-black text-white shadow-xs"
-                    : "bg-transparent text-slate-600 hover:text-slate-900"
+                onClick={() => setIsDifferentDropoff(false)}
+                className={`px-4 sm:px-5 py-2 rounded-full text-[13px] font-semibold transition-all duration-200 ${
+                  !isDifferentDropoff
+                    ? "bg-black text-white shadow-sm"
+                    : "bg-white text-slate-700 border border-slate-200 hover:border-slate-300"
                 }`}
               >
-                รถคัดเกรดรับประกันศูนย์ (Certified)
+                Same drop off
               </button>
             </div>
 
-            <div className="h-px bg-slate-100 mb-4" />
+            {/* Subtle Divider Line */}
+            <div className="h-px bg-slate-100 mb-3" />
 
-            {/* Inputs Form */}
-            <form onSubmit={handleSearchSubmit} className="grid grid-cols-1 md:grid-cols-12 gap-3 items-center">
+            {/* Inputs Form: Seamless horizontal row matching mockup */}
+            <form onSubmit={handleSearchSubmit} className="flex flex-col md:flex-row items-center justify-between gap-3 md:gap-0">
               
-              {/* Input 1: Brand / Model */}
-              <div className="md:col-span-4 flex items-center gap-3.5 px-3 py-2 rounded-2xl hover:bg-slate-50/80 transition group cursor-pointer border border-transparent hover:border-slate-200">
-                <div className="text-slate-400 group-hover:text-indigo-600 transition-colors">
-                  <Car className="w-5 h-5" />
-                </div>
-                <div className="flex-1">
+              {/* Column 1: Pick up location */}
+              <div className="w-full md:flex-1 flex items-center gap-3.5 py-2 md:py-1 pr-4 group cursor-pointer">
+                {/* SVG Pin Icon with inner circle matching mockup */}
+                <svg
+                  className="w-5 h-5 text-slate-300 group-hover:text-indigo-600 transition-colors shrink-0"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="1.8"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
+                  <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z" />
+                  <circle cx="12" cy="10" r="3" />
+                </svg>
+
+                <div className="flex-1 min-w-0">
                   <input
                     type="text"
-                    value={modelSearch}
-                    onChange={(e) => setModelSearch(e.target.value)}
-                    placeholder="Toyota, Honda, Nissan..."
-                    className="w-full text-sm sm:text-base font-bold text-slate-900 placeholder:text-slate-400 bg-transparent border-none p-0 focus:outline-none focus:ring-0"
+                    value={pickupLocation}
+                    onChange={(e) => setPickupLocation(e.target.value)}
+                    placeholder="City or Airport"
+                    className="w-full text-base sm:text-[17px] font-bold text-slate-900 placeholder:text-slate-900 bg-transparent border-none p-0 focus:outline-none focus:ring-0 leading-tight"
                   />
-                  <div className="text-xs text-slate-400 font-medium">ยี่ห้อ หรือ รุ่นรถยนต์</div>
+                  <div className="text-[12px] text-slate-400 font-normal mt-0.5 leading-none">Pick up location</div>
                 </div>
               </div>
 
-              {/* Input 2: Location / Branch */}
-              <div className="md:col-span-4 flex items-center gap-3.5 px-3 py-2 rounded-2xl hover:bg-slate-50/80 transition group cursor-pointer border border-transparent hover:border-slate-200 border-l-0 md:border-l md:border-slate-100">
-                <div className="text-slate-400 group-hover:text-indigo-600 transition-colors">
-                  <MapPin className="w-5 h-5" />
-                </div>
-                <div className="flex-1">
+              {/* Vertical Divider 1 */}
+              <div className="hidden md:block w-px h-11 bg-slate-100 shrink-0 mx-2" />
+
+              {/* Column 2: Drop off location */}
+              <div className="w-full md:flex-1 flex items-center gap-3.5 py-2 md:py-1 px-0 md:px-4 group cursor-pointer">
+                {/* SVG Pin Icon with inner circle matching mockup */}
+                <svg
+                  className="w-5 h-5 text-slate-300 group-hover:text-indigo-600 transition-colors shrink-0"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="1.8"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
+                  <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z" />
+                  <circle cx="12" cy="10" r="3" />
+                </svg>
+
+                <div className="flex-1 min-w-0">
                   <input
                     type="text"
-                    value={locationSearch}
-                    onChange={(e) => setLocationSearch(e.target.value)}
-                    placeholder="กรุงเทพฯ, ทุกสาขา"
-                    className="w-full text-sm sm:text-base font-bold text-slate-900 placeholder:text-slate-400 bg-transparent border-none p-0 focus:outline-none focus:ring-0"
+                    value={dropoffLocation}
+                    onChange={(e) => setDropoffLocation(e.target.value)}
+                    placeholder="City or Airport"
+                    className="w-full text-base sm:text-[17px] font-bold text-slate-900 placeholder:text-slate-900 bg-transparent border-none p-0 focus:outline-none focus:ring-0 leading-tight"
                   />
-                  <div className="text-xs text-slate-400 font-medium">สาขา หรือ จังหวัด</div>
+                  <div className="text-[12px] text-slate-400 font-normal mt-0.5 leading-none">Drop off location</div>
                 </div>
               </div>
 
-              {/* Input 3: Budget / Price */}
-              <div className="md:col-span-3 flex items-center gap-3.5 px-3 py-2 rounded-2xl hover:bg-slate-50/80 transition group cursor-pointer border border-transparent hover:border-slate-200 border-l-0 md:border-l md:border-slate-100">
-                <div className="text-slate-400 group-hover:text-indigo-600 transition-colors">
-                  <BadgePercent className="w-5 h-5" />
-                </div>
-                <div className="flex-1">
+              {/* Vertical Divider 2 */}
+              <div className="hidden md:block w-px h-11 bg-slate-100 shrink-0 mx-2" />
+
+              {/* Column 3: Dates */}
+              <div className="w-full md:flex-1 flex items-center gap-3.5 py-2 md:py-1 px-0 md:px-4 group cursor-pointer">
+                {/* Calendar Icon matching mockup */}
+                <svg
+                  className="w-5 h-5 text-slate-300 group-hover:text-indigo-600 transition-colors shrink-0"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="1.8"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
+                  <rect width="18" height="18" x="3" y="4" rx="3" />
+                  <path d="M16 2v4M8 2v4M3 10h18" />
+                </svg>
+
+                <div className="flex-1 min-w-0">
                   <input
                     type="text"
-                    value={priceBudget}
-                    onChange={(e) => setPriceBudget(e.target.value)}
-                    placeholder="ทุกช่วงราคา / ผ่อนสบาย"
-                    className="w-full text-sm sm:text-base font-bold text-slate-900 placeholder:text-slate-400 bg-transparent border-none p-0 focus:outline-none focus:ring-0"
+                    value={dateRange}
+                    onChange={(e) => setDateRange(e.target.value)}
+                    placeholder="Sep 16 - Sep 19"
+                    className="w-full text-base sm:text-[17px] font-bold text-slate-900 placeholder:text-slate-900 bg-transparent border-none p-0 focus:outline-none focus:ring-0 leading-tight"
                   />
-                  <div className="text-xs text-slate-400 font-medium">งบประมาณ / ค่างวด</div>
+                  <div className="text-[12px] text-slate-400 font-normal mt-0.5 leading-none">Pick up - Drop off</div>
                 </div>
               </div>
 
-              {/* Round Purple Search Button */}
-              <div className="md:col-span-1 flex justify-end">
+              {/* Column 4: Large Purple Action Search Button */}
+              <div className="w-full md:w-auto flex justify-end md:pl-3 pt-2 md:pt-0 shrink-0">
                 <button
                   type="submit"
-                  className="w-12 h-12 rounded-full bg-indigo-600 hover:bg-indigo-700 active:scale-95 text-white flex items-center justify-center shadow-lg shadow-indigo-600/30 transition-all cursor-pointer"
-                  aria-label="Search used cars"
+                  className="w-13 h-13 sm:w-14 sm:h-14 rounded-full bg-[#4F46E5] hover:bg-[#4338CA] active:scale-95 text-white flex items-center justify-center shadow-lg shadow-indigo-600/35 transition-all cursor-pointer"
+                  aria-label="Search"
                 >
-                  <Search className="w-5 h-5 stroke-[2.5]" />
+                  <Search className="w-5 h-5 stroke-[2.4]" />
                 </button>
               </div>
 
