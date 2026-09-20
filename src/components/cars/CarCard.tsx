@@ -14,22 +14,27 @@ import {
   Sparkles
 } from "lucide-react";
 import { Car } from "@/types";
+import { formatPriceByLang, formatMonthlyByLang } from "@/lib/utils";
+import { Language } from "@/lib/i18n/translations";
 
 interface CarCardProps {
   car: Car;
   isFavorite: boolean;
   onToggleFavorite: (carId: string) => void;
   onSelectCar?: (car: Car) => void;
+  lang?: Language;
 }
 
 export function CarCard({
   car,
   isFavorite,
   onToggleFavorite,
+  lang = "th",
 }: CarCardProps) {
-  const isElectric = car.fuel_type === "Electric";
-  const displayPrice = car.price || car.price_per_day || 15000;
-  const monthlyPay = car.monthly_payment || Math.round(displayPrice / 72);
+  const isElectric = car.fuel_type === "Electric" || car.category === "EV";
+  const basePrice = car.price || car.price_per_day || 15000;
+  const formattedPrice = formatPriceByLang(basePrice, lang);
+  const formattedMonthly = formatMonthlyByLang(basePrice, car.monthly_payment, lang);
 
   return (
     <Link 
@@ -144,11 +149,11 @@ export function CarCard({
           <div className="text-right">
             <div className="flex items-baseline justify-end gap-1">
               <span className="text-lg sm:text-xl font-extrabold text-slate-900 tracking-tight">
-                ${displayPrice.toLocaleString()}
+                {formattedPrice}
               </span>
             </div>
             <div className="text-[11px] text-indigo-600 font-bold">
-              ผ่อน ~${monthlyPay}/เดือน
+              {lang === "th" ? `ผ่อน ${formattedMonthly}` : `Starts ${formattedMonthly}`}
             </div>
           </div>
         </div>

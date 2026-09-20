@@ -30,6 +30,7 @@ import { initialCarsData } from "@/lib/data/mockCars";
 import { Car } from "@/types";
 import { getSupabaseBrowserClient, isSupabaseConfigured } from "@/lib/supabase/client";
 import { Language } from "@/lib/i18n/translations";
+import { formatPriceByLang, formatMonthlyByLang } from "@/lib/utils";
 
 export default function CarDetailPage() {
   const params = useParams();
@@ -54,7 +55,11 @@ export default function CarDetailPage() {
           if (supabase) {
             const { data } = await supabase.from("cars").select("*").eq("id", carId).single();
             if (data) {
-              setCar(data as Car);
+              const normalized = {
+                ...(data as Car),
+                category: (data.category === "Electric" || data.fuel_type === "Electric") ? ("EV" as const) : (data.category as any)
+              };
+              setCar(normalized);
               setLoading(false);
               return;
             }
@@ -120,8 +125,9 @@ export default function CarDetailPage() {
     );
   }
 
-  const displayPrice = car.price || car.price_per_day || 18600;
-  const monthlyPay = car.monthly_payment || Math.round(displayPrice / 72);
+  const basePrice = car.price || car.price_per_day || 18600;
+  const formattedPrice = formatPriceByLang(basePrice, lang);
+  const formattedMonthly = formatMonthlyByLang(basePrice, car.monthly_payment, lang);
 
   // Gallery Photos matching template collage (Front, Cockpit, Side, Profile)
   const gallery = [
@@ -416,10 +422,10 @@ export default function CarDetailPage() {
               <div className="flex items-baseline justify-between mb-5">
                 <div>
                   <div className="text-2xl sm:text-3xl font-black text-slate-900">
-                    ${displayPrice.toLocaleString()}
+                    {formattedPrice}
                   </div>
                   <div className="text-xs font-bold text-indigo-600 mt-0.5">
-                    ผ่อนเริ่มต้น ~${monthlyPay} /เดือน
+                    {lang === "th" ? `ผ่อนเริ่มต้น ${formattedMonthly}` : `Starts from ${formattedMonthly}`}
                   </div>
                 </div>
 
@@ -480,20 +486,20 @@ export default function CarDetailPage() {
                   {/* Pricing Breakdown Rows matching template */}
                   <div className="pt-2 space-y-2 text-xs">
                     <div className="flex justify-between text-slate-600">
-                      <span>ราคาขายเงินสด</span>
-                      <span>${displayPrice.toLocaleString()}</span>
+                      <span>{lang === "th" ? "ราคาขายเงินสด" : "Vehicle Cash Price"}</span>
+                      <span className="font-bold text-slate-800">{formattedPrice}</span>
                     </div>
                     <div className="flex justify-between text-slate-600">
-                      <span>ค่าตรวจสภาพ 200 จุด</span>
-                      <span className="text-emerald-600 font-bold">ฟรี</span>
+                      <span>{lang === "th" ? "ค่าตรวจสภาพ 200 จุด" : "200-Point Inspection"}</span>
+                      <span className="text-emerald-600 font-bold">{lang === "th" ? "ฟรี" : "Free"}</span>
                     </div>
                     <div className="flex justify-between text-slate-600">
-                      <span>ค่าโอนกรรมสิทธิ์ & ไฟแนนซ์</span>
-                      <span className="text-emerald-600 font-bold">ฟรี</span>
+                      <span>{lang === "th" ? "ค่าโอนกรรมสิทธิ์ & ไฟแนนซ์" : "Transfer & Document Fee"}</span>
+                      <span className="text-emerald-600 font-bold">{lang === "th" ? "ฟรี" : "Free"}</span>
                     </div>
                     <div className="pt-3 border-t border-slate-100 flex justify-between font-extrabold text-sm text-slate-900">
-                      <span>ราคารวมทั้งสิ้น</span>
-                      <span>${displayPrice.toLocaleString()}</span>
+                      <span>{lang === "th" ? "ราคารวมทั้งสิ้น" : "Total Purchase Price"}</span>
+                      <span className="text-indigo-600 font-black">{formattedPrice}</span>
                     </div>
                   </div>
 

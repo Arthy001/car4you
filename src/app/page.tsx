@@ -57,7 +57,11 @@ export default function HomePage() {
         if (supabase) {
           const { data, error } = await supabase.from("cars").select("*");
           if (!error && data && data.length > 0) {
-            setCars(data as Car[]);
+            const normalizedCars = (data as Car[]).map((c) => ({
+              ...c,
+              category: (c.category === "Electric" || c.fuel_type === "Electric") ? ("EV" as const) : c.category
+            }));
+            setCars(normalizedCars);
           }
         }
       } catch (err) {
@@ -91,9 +95,19 @@ export default function HomePage() {
         if (!matchesLocation) return false;
       }
 
-      // Car Types (Sedan, SUV, Hatchback, Electric, Van, Compact)
+      // Car Types (Sedan, SUV, Hatchback, EV/Electric, Van, Coupe)
       if (filters.carTypes.length > 0) {
-        if (!filters.carTypes.includes(car.category)) {
+        const matchesCategory = filters.carTypes.some((type) => {
+          if (type === "EV") {
+            return car.category === "EV" || car.category === "Electric" || car.fuel_type === "Electric";
+          }
+          if (type === "Electric") {
+            return car.category === "EV" || car.category === "Electric" || car.fuel_type === "Electric";
+          }
+          return car.category === type;
+        });
+
+        if (!matchesCategory) {
           return false;
         }
       }
@@ -231,6 +245,7 @@ export default function HomePage() {
           onToggleFavorite={handleToggleFavorite}
           onSelectCar={(car) => setSelectedCar(car)}
           onResetFilters={handleResetFilters}
+          lang={lang}
         />
 
         {/* Dynamic Pagination Bar */}

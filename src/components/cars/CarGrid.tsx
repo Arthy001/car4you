@@ -5,12 +5,15 @@ import { Car } from "@/types";
 import { CarCard } from "./CarCard";
 import { Car as CarIcon, RotateCcw } from "lucide-react";
 
+import { Language } from "@/lib/i18n/translations";
+
 interface CarGridProps {
   cars: Car[];
   favorites: string[];
   onToggleFavorite: (carId: string) => void;
   onSelectCar: (car: Car) => void;
   onResetFilters: () => void;
+  lang?: Language;
 }
 
 export function CarGrid({
@@ -19,6 +22,7 @@ export function CarGrid({
   onToggleFavorite,
   onSelectCar,
   onResetFilters,
+  lang = "th",
 }: CarGridProps) {
   if (cars.length === 0) {
     return (
@@ -52,6 +56,7 @@ export function CarGrid({
           isFavorite={favorites.includes(car.id)}
           onToggleFavorite={onToggleFavorite}
           onSelectCar={onSelectCar}
+          lang={lang}
         />
       ))}
     </div>

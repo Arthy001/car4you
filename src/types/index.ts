@@ -4,6 +4,7 @@ export type CarCategory =
   | "SUV" 
   | "Hatchback" 
   | "EV" 
+  | "Electric" 
   | "Van" 
   | "Coupe" 
   | "Compact";

@@ -11,6 +11,7 @@ import {
 } from "lucide-react";
 import { FilterState } from "@/types";
 import { Language, translations } from "@/lib/i18n/translations";
+import { formatPriceByLang } from "@/lib/utils";
 
 interface FilterBarProps {
   totalCount: number;
@@ -146,13 +147,13 @@ export function FilterBar({
               <div className="mb-4">
                 <div className="flex justify-between text-xs font-semibold text-slate-700 mb-2">
                   <span>{t.maxPrice}</span>
-                  <span className="text-indigo-600 font-bold">${filters.maxPrice.toLocaleString()}</span>
+                  <span className="text-indigo-600 font-bold">{formatPriceByLang(filters.maxPrice, lang)}</span>
                 </div>
                 <input
                   type="range"
                   min="5000"
-                  max="50000"
-                  step="1000"
+                  max="200000"
+                  step="5000"
                   value={filters.maxPrice}
                   onChange={(e) => handlePriceChange(Number(e.target.value))}
                   className="w-full accent-indigo-600 cursor-pointer"
@@ -266,8 +267,8 @@ export function FilterBar({
             className="px-3.5 py-1.5 rounded-full border border-slate-300 bg-white text-slate-900 text-xs sm:text-sm font-medium flex items-center gap-1.5 hover:border-slate-400 hover:bg-slate-50 transition"
           >
             <span>{t.priceRange}</span>
-            {filters.maxPrice < 50000 && (
-              <span className="text-xs font-semibold text-indigo-600">(${filters.maxPrice.toLocaleString()})</span>
+            {filters.maxPrice < 200000 && (
+              <span className="text-xs font-semibold text-indigo-600">({formatPriceByLang(filters.maxPrice, lang)})</span>
             )}
             <ChevronDown className={`w-3.5 h-3.5 text-slate-500 transition-transform ${activeDropdown === "price" ? "rotate-180" : ""}`} />
           </button>
@@ -276,20 +277,20 @@ export function FilterBar({
             <div className="absolute left-0 mt-3 w-72 bg-white rounded-2xl shadow-xl border border-slate-100 p-4 z-50 animate-in fade-in slide-in-from-top-2 duration-150">
               <div className="flex justify-between text-xs font-bold text-slate-800 mb-3">
                 <span>{t.maxPrice}:</span>
-                <span className="text-indigo-600">${filters.maxPrice.toLocaleString()}</span>
+                <span className="text-indigo-600">{formatPriceByLang(filters.maxPrice, lang)}</span>
               </div>
               <input
                 type="range"
                 min="5000"
-                max="50000"
-                step="1000"
+                max="200000"
+                step="5000"
                 value={filters.maxPrice}
                 onChange={(e) => handlePriceChange(Number(e.target.value))}
                 className="w-full accent-indigo-600 cursor-pointer"
               />
               <div className="flex justify-between text-[11px] text-slate-400 mt-1">
-                <span>$5,000</span>
-                <span>$50,000+</span>
+                <span>{formatPriceByLang(5000, lang)}</span>
+                <span>{formatPriceByLang(200000, lang)}+</span>
               </div>
             </div>
           )}
